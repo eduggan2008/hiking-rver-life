@@ -7,6 +7,28 @@ specifies that any unauthenticated user can "create", "read", "update",
 and "delete" any "Todo" records.
 =========================================================================*/
 const schema = a.schema({
+  Blog: a
+    .model({
+      title: a.string(),
+      subtitle: a.string(),
+      content: a.string(),
+      image: a.string(),
+      date: a.datetime(),
+      timestamp: a.timestamp(),
+    })
+    .authorization((allow) => [allow.owner()]),
+});
+
+export type Schema = ClientSchema<typeof schema>;
+
+export const data = defineData({
+  schema,
+  authorizationModes: {
+    defaultAuthorizationMode: 'userPool',
+  },
+});
+
+/* const schema = a.schema({
   Todo: a
     .model({
       content: a.string(),
@@ -21,7 +43,7 @@ export const data = defineData({
   authorizationModes: {
     defaultAuthorizationMode: 'iam',
   },
-});
+}); */
 
 /*== STEP 2 ===============================================================
 Go to your frontend source code. From your client-side code, generate a
